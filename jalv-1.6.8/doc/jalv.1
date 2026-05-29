@@ -1,0 +1,85 @@
+.TH JALV 1 "18 Feb 2017"
+
+.SH NAME
+.B jalv \- Run an LV2 plugin as a JACK application (console version).
+
+.SH SYNOPSIS
+.B jalv [OPTION]... PLUGIN_URI
+
+.SH OPTIONS
+
+.TP
+\fB\-b SIZE\fR
+Buffer size for plugin <=> UI communication.
+
+.TP
+\fB\-c SYM=VAL\fR
+Set control value (e.g. "vol=1.4").
+
+.TP
+\fB\-d\fR
+Dump plugin <=> UI communication.
+
+.TP
+\fB\-U URI\fR
+Load the UI with the given URI.
+
+.TP
+\fB\-h\fR
+Print the command line options.
+
+.TP
+\fB\-i\fR
+Ignore input on stdin (for background use).
+
+.TP
+\fB\-l DIR\fR
+Load state from state directory.
+
+.TP
+\fB\-n NAME\fR
+Jack client name
+
+.TP
+\fB\-p\fR
+Print control output changes to stdout.
+
+.TP
+\fB\-s\fR
+Show plugin UI if possible.
+
+This option only works when plugins provide a UI that is usable via the non-embeddable showHide interface.  For other, embeddable UIs, use jalv.gtk(1) or jalv.qt(1).
+
+.TP
+\fB\-t\fR
+Print trace messages from plugin
+
+.TP
+\fB\-x\fR
+Use only exact Jack client name, and exit if it is taken
+
+.SH COMMANDS
+
+The Jalv prompt supports several commands for interactive control:
+
+  \fBhelp\fR              Display help message
+  \fBcontrols\fR          Print settable control values
+  \fBmonitors\fR          Print output control values
+  \fBpresets\fR           Print available presets
+  \fBpreset URI\fR        Set preset
+  \fBset INDEX VALUE\fR   Set control value by port index
+  \fBset SYMBOL VALUE\fR  Set control value by symbol
+  \fBSYMBOL = VALUE\fR    Set control value by symbol
+
+.SH "SEE ALSO"
+.BR jalv.gtk(1),
+.BR jalv.gtk3(1),
+.BR jalv.qt5(2),
+.BR lv2ls(1),
+.BR jackd(1)
+
+.SH AUTHOR
+jalv was written by David Robillard <d@drobilla.net>
+.PP
+This manual page was written by Jaromír Mikes <mira.mikes@seznam.cz>
+and David Robillard <d@drobilla.net>

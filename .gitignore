@@ -1,0 +1,49 @@
+# =============================================================================
+# potato303 — .gitignore
+# =============================================================================
+
+# JC303 source — this is a clone of https://github.com/midilab/jc303
+# Reference it in README; don't nest repos
+jc303_src/
+
+# Build artifacts
+*.lv2/
+*.a
+*.o
+*.so
+*.d
+
+# Original potatosynth repo (separate repo, separate git history)
+potatosynth/
+
+# Large build/session logs — useful locally, not in git
+setup_log.txt
+outputjc303compile.md
+nohup.out
+
+# Pi home directory dotfiles (this folder is the Pi home dir on NFS/SMB)
+.bash_logout
+.bashrc
+.profile
+.bash_history
+.sudo_as_admin_successful
+
+# jalv tarball — source is in jalv-1.6.8/ (already committed), tarball is redundant
+jalv-1.6.8.tar.xz
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Editor
+.vscode/
+*.swp
+*.swo
+*~

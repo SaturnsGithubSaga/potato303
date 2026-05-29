@@ -1,0 +1,390 @@
+# ==============================================================================
+# tui_layout.yaml — PotatoSynth TUI Layout & Theme
+# Plugin: JC-303 Acid Engine
+# ==============================================================================
+#
+# SINGLE SOURCE OF TRUTH
+# ─────────────────────
+# Widget labels, CC numbers, and port symbols all come from:
+#   config/JC303/mapping.yaml  →  parameters.<slug>
+#
+# In this file you only specify:
+#   param       : the slug key from mapping.yaml  (e.g. "cutoff", "resonance")
+#   type        : widget class from widgets.py
+#   col/row     : grid position (1-based)
+#   col_span    : columns occupied
+#   row_span    : rows occupied
+#   theme_group : color group from theme.groups below
+#   userval     : (threshold widgets) integer 0-127 trigger level
+#   preset_file : (PresetBox widgets) path to preset YAML
+#   preset_key  : top-level key in that YAML holding the list
+#   lines       : (MarkupBox widgets) { line1: "...", line2: "..." … line6 }
+#
+# tui.py resolves label and cc at boot from mapping.yaml using the param slug.
+# If a param key is absent from mapping.yaml, tui.py shows an error cell.
+#
+# GRID SYSTEM
+# ──────────
+# Content area: 12 columns × 7 rows of 10×4 character cells.
+# Total screen: 128×37 TTY characters.
+#   Row 0   : 3-line header  (outside the grid)
+#   Rows 1-7: content grid
+#   Row 8   : 1-line footer  (outside the grid)
+#
+# Widget type → span:
+#   SmallDial            1 col × 1 row   (10×4)
+#   LargeKnob            2 col × 2 row   (20×8)
+#   VerticalIndicator    1 col × 2 row   (10×8)
+#   HorizontalIndicator  2 col × 1 row   (20×4)
+#   PresetBoxSquare      2 col × 2 row   (20×8)
+#   PresetBoxLarge       4 col × 2 row   (40×8)
+#   OnOffIndicator       2 col × 1 row   (20×4)
+#   MarkupBoxSmall       2 col × 2 row   (20×8)
+#   MarkupBoxLarge       4 col × 2 row   (40×8)
+# ==============================================================================
+
+
+# ── System ─────────────────────────────────────────────────────────────────────
+system:
+  mapping_file:  "config/JC303/mapping.yaml"
+  state_file:    "/dev/shm/synth_state.json"
+  poll_hz:       10
+
+  grid:
+    columns: 12
+    rows:    7
+
+  header:
+    line1: "POTATOSYNTH-OS"
+    line2: "/config/JC303"
+    line3: "jc303 by midilab"
+
+  footer:
+    # F-keys only — no risk of accidental press during performance
+    shortcuts:
+      - { key: "F2",  label: "Save state"   }
+      - { key: "F5",  label: "Load state"   }
+      - { key: "F9",  label: "Reload synth" }
+      - { key: "F10", label: "Synth menu"   }
+      - { key: "F11", label: "Shutdown"     }
+      - { key: "F12", label: "Quit"         }
+
+
+# ── Theme ──────────────────────────────────────────────────────────────────────
+# Each group sets colors for all widgets that declare that theme_group.
+# Change a group here — every widget in it updates instantly on next boot.
+# Values are standard CSS color strings.
+theme:
+  screen_bg: "#000000"
+
+  groups:
+
+    filter:
+      border_color: "#4dff00"   # ← set your color here
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    envelope:
+      border_color: "#4dff00"
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    overdrive:
+      border_color: "#808080"
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    modulation:
+      border_color: "#808080"
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    switches:
+      border_color: "#808080"
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    global:
+      border_color: "#4dff00"
+      bg_color:     "#1a1a1a"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+    info:
+      border_color: "#4dff00"
+      bg_color:     "#0d0d0d"
+      label_color:  "#ffffff"
+      value_color:  "#00ff00"
+
+
+# ── Layout ─────────────────────────────────────────────────────────────────────
+layout:
+
+  # ── Rows 1-2  ─────────────────────────────────────────────────────
+
+  - id:          w_cutoff
+    type:        LargeKnob
+    param:       cutoff            # → JC303_cutoff, CC74, "Cutoff Freq"
+    col:         1
+    row:         1
+    col_span:    2
+    row_span:    2
+    theme_group: filter
+
+  - id:          w_resonance
+    type:        LargeKnob
+    param:       resonance         # → JC303_resonance, CC71, "Resonance"
+    col:         3
+    row:         1
+    col_span:    2
+    row_span:    2
+    theme_group: filter
+
+  - id:          w_envmod
+    type:        LargeKnob
+    param:       envmod            # → JC303_envmod, CC12, "Env Mod"
+    col:         5
+    row:         1
+    col_span:    2
+    row_span:    2
+    theme_group: envelope
+
+  - id:          w_decay
+    type:        LargeKnob
+    param:       decay             # → JC303_decay, CC75, "Decay"
+    col:         7
+    row:         1
+    col_span:    2
+    row_span:    2
+    theme_group: envelope
+
+  - id:          w_accent
+    type:        LargeKnob
+    param:       accent            # → JC303_accent, CC16, "Accent Level"
+    col:         9
+    row:         1
+    col_span:    2
+    row_span:    2
+    theme_group: modulation
+
+  
+  - id:          w_waveform
+    type:        OnOffIndicator
+    param:       waveform          # → JC303_waveform, CC81, "Waveform"
+    col:         11
+    row:         1
+    col_span:    2
+    row_span:    1
+    theme_group: switches
+    userval:     64               # sawtooth below 64, square above
+
+  - id:          w_volume
+    type:        HorizontalIndicator
+    param:       volume            # reuses accent value as a trigger indicator
+    col:         11
+    row:         2
+    col_span:    2
+    row_span:    1
+    theme_group: global
+    userval:     99               # fires above ~0.78 float  (accent threshold)
+
+  # ── Rows 4-5  ▸  ───────────────────────────────────────────
+
+  - id:          w_info_left
+    type:        MarkupBoxSmall
+    col:         1
+    row:         6
+    col_span:    2
+    row_span:    2
+    theme_group: info
+    lines:
+      line1: "PotatoSynth-OS"
+      line2: "Phase 4"
+      line3: ""
+      line4: "engine.py  OK"
+      line5: "tui.py     OK"
+      line6: ""
+
+  - id:          w_od_model
+    type:        PresetBoxSquare
+    param:       od_model          # → JC303_overdriveModelIndex, CC85, "OD Model"
+    col:         7
+    row:         4
+    col_span:    2
+    row_span:    2
+    theme_group: overdrive
+    preset_file: "config/JC303/presets_jc303.yaml"
+    preset_key:  "overdrive_models"
+
+  - id:          w_od_level
+    type:        SmallDial
+    param:       od_level          # → JC303_overdriveLevel, CC17, "OD Level"
+    col:         11
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: overdrive
+
+  - id:          w_od_drywet
+    type:        SmallDial
+    param:       od_drywet         # → JC303_overdriveDryWet, CC84, "OD Dry/Wet"
+    col:         12
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: overdrive
+
+  # ── Row 3  ▸  Global / performance ───────────────────────────────────────────
+
+
+
+  - id:          w_tuning
+    type:        LargeKnob
+    param:       tuning            # → JC303_tuning, CC104, "Tuning"
+    col:         5
+    row:         6
+    col_span:    2
+    row_span:    2
+    theme_group: global
+
+  - id:          w_slide_time
+    type:        SmallDial
+    param:       slide_time        # → JC303_slideTime, CC5, "Slide Time"
+    col:         5
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: modulation
+
+  # ── Row 3  ▸  Envelope sub-params ────────────────────────────────────────────
+
+  - id:          w_normal_decay
+    type:        SmallDial
+    param:       normal_decay      # → JC303_normalDecay, CC83, "Normal Decay"
+    col:         5
+    row:         4
+    col_span:    1
+    row_span:    1
+    theme_group: envelope
+
+  - id:          w_accent_decay
+    type:        SmallDial
+    param:       accent_decay      # → JC303_accentDecay, CC82, "Accent Decay"
+    col:         6
+    row:         4
+    col_span:    1
+    row_span:    1
+    theme_group: envelope
+
+  - id:          w_soft_attack
+    type:        SmallDial
+    param:       soft_attack       # → JC303_softAttack, CC86, "Soft Attack"
+    col:         4
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: envelope
+
+  - id:          w_sqr_driver
+    type:        SmallDial
+    param:       sqr_driver        # → JC303_sqrDriver, CC87, "Sqr Driver"
+    col:         6
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: overdrive
+
+  # ── Row 3  ▸  Filter / delay extras ──────────────────────────────────────────
+
+  - id:          w_fb_filt
+    type:        SmallDial
+    param:       delay_fb          # → JC303_feedbackFilter, CC19, "Delay FB"
+    col:         3
+    row:         5
+    col_span:    1
+    row_span:    1
+    theme_group: filter
+
+  # cols 10-12, row 3: free for future use / Phase 5 preset display
+
+  # ── Row 4  ▸  Switches ────────────────────────────────────────────────────────
+
+
+
+  - id:          w_switch_mod
+    type:        OnOffIndicator
+    param:       switch_mod        # → JC303_switchModState, CC102, "Slide Status"
+    col:         3
+    row:         4
+    col_span:    2
+    row_span:    1
+    theme_group: switches
+    userval:     64
+
+  - id:          w_switch_od
+    type:        OnOffIndicator
+    param:       switch_od         # → JC303_switchOverdriveState, CC80, "OD Switch"
+    col:         11
+    row:         4
+    col_span:    2
+    row_span:    1
+    theme_group: switches
+    userval:     64
+
+
+
+  # cols 9-12, row 4: free
+
+  # ── Rows 5-7  ▸  Info / status ───────────────────────────────────────────────
+
+  - id:          w_info_center
+    type:        MarkupBoxLarge
+    col:         1
+    row:         8
+    col_span:    4
+    row_span:    2
+    theme_group: info
+    lines:
+      line1: "JC-303 Acid Engine  /  midilab"
+      line2: ""
+      line3: "F2:Save state       F5:Load state"
+      line4: "F9:Reload synth     F10:Synth menu"
+      line5: "F11:Shutdown        F12:Quit"
+      line6: ""
+
+  - id:          w_info_center2
+    type:        MarkupBoxLarge
+    col:         1
+    row:         8
+    col_span:    4
+    row_span:    2
+    theme_group: info
+    lines:
+      line1: ""
+      line2: ""
+      line3: ""
+      line4: ""
+      line5: ""
+      line6: ""
+
+  - id:          w_info_center3
+    type:        MarkupBoxLarge
+    col:         1
+    row:         8
+    col_span:    4
+    row_span:    2
+    theme_group: info
+    lines:
+      line1: ""
+      line2: ""
+      line3: ""
+      line4: ""
+      line5: ""
+      line6: ""
+
+  # cols 7-12, rows 5-7: free for Phase 5 preset name / status display

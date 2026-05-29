@@ -1,0 +1,125 @@
+# config/jc303/mapping.yaml
+
+synth_profile:
+  name: "JC-303 Acid Engine"
+  lv2_uri: "http://github.com/midilab/JC303"
+
+io:
+  tracker_input_port: "CH345"
+  synth_output_port: "playback"
+  midi_channel: 1        # 1-16; only messages on this channel are processed
+
+parameters:
+  volume:
+    cc: 7
+    port_symbol: "JC303_volume"
+    name: "AccentTrig"
+    default: 0.0
+
+  slide_time:
+    cc: 5
+    port_symbol: "JC303_slideTime"
+    name: "SlideTime"
+    default: 0.0
+
+  envmod:
+    cc: 12
+    port_symbol: "JC303_envmod"
+    name: "Env Mod"
+    default: 0.0
+
+  accent:
+    cc: 16
+    port_symbol: "JC303_accent"
+    name: "Accent"
+    default: 0.0
+
+  od_level:
+    cc: 17
+    port_symbol: "JC303_overdriveLevel"
+    name: "OD Level"
+    default: 0.0
+
+  delay_fb:
+    cc: 19
+    port_symbol: "JC303_feedbackFilter"
+    name: "FiltFeedb"
+    default: 0.0
+
+  resonance:
+    cc: 71
+    port_symbol: "JC303_resonance"
+    name: "Resonance"
+    default: 0.0
+
+  cutoff:
+    cc: 74
+    port_symbol: "JC303_cutoff"
+    name: "Cutoff"
+    default: 0.0
+
+  decay:
+    cc: 75
+    port_symbol: "JC303_decay"
+    name: "Decay"
+    default: 0.0
+
+  switch_od:
+    cc: 80
+    port_symbol: "JC303_switchOverdriveState"
+    name: "OD Switch"
+    default: 0.0
+
+  waveform:
+    cc: 81
+    port_symbol: "JC303_waveform"
+    name: "Waveform"
+    default: 0.0
+
+  accent_decay:
+    cc: 82
+    port_symbol: "JC303_accentDecay"
+    name: "AcctDecay"
+    default: 0.0
+
+  normal_decay:
+    cc: 83
+    port_symbol: "JC303_normalDecay"
+    name: "NormDecay"
+    default: 0.0
+
+  od_drywet:
+    cc: 84
+    port_symbol: "JC303_overdriveDryWet"
+    name: "Dry/Wet"
+    default: 0.0
+
+  od_model:
+    cc: 85
+    port_symbol: "JC303_overdriveModelIndex"
+    name: "OverDrive Model"
+    default: 0.0
+
+  soft_attack:
+    cc: 86
+    port_symbol: "JC303_softAttack"
+    name: "SftAttack"
+    default: 0.0
+
+  sqr_driver:
+    cc: 87
+    port_symbol: "JC303_sqrDriver"
+    name: "SqrDriver"
+    default: 0.0
+
+  switch_mod:
+    cc: 102
+    port_symbol: "JC303_switchModState"
+    name: "Modifications"
+    default: 0.0
+
+  tuning:
+    cc: 104
+    port_symbol: "JC303_tuning"
+    name: "Tuning"
+    default: 0.5
